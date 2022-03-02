@@ -105,7 +105,7 @@ function init() {
 
                                 if (node.isMesh){
                                     if (node.material.name == "side") {
-                                        console.log(node.material.name);
+                                        // console.log(node.material.name);
                                         node.material = material;
                                     }
                                 }
