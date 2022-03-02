@@ -9,6 +9,7 @@ const windowHalf = new THREE.Vector2( window.innerWidth / 2, window.innerHeight 
 
 renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
 camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 20 );
+
 const controls = new THREE.OrbitControls( camera, renderer.domElement );
 let model;
 
@@ -66,9 +67,9 @@ function init() {
 						loader.load( '404.gltf', function ( gltf ) {
                             model = gltf;
 							scene.add( model.scene );
+                            //move model down.
                             model.scene.position.y = -1;   
-                            // console.log(model.scene);   
-
+                            //merge light with custom shader
                             var uniforms = THREE.UniformsUtils.merge(
                                 [THREE.UniformsLib['lights'],
                                 {
@@ -76,8 +77,8 @@ function init() {
                                 }
                                 ]
                             )
-                            console.log(uniforms)
-
+                            // console.log(uniforms)
+                            //new custom shader
                             var material = new THREE.ShaderMaterial({
                                 uniforms: THREE.UniformsUtils.merge([
                                     THREE.UniformsLib['lights'],
@@ -94,10 +95,10 @@ function init() {
                                 ]),
                                 vertexShader: vertShader,
                                 fragmentShader: fracShader,
+                                //enable light
                                 lights: true
 
                               });      
-                              
                               
                             model.scene.traverse( function(node) {
                                 
@@ -107,12 +108,6 @@ function init() {
                                         console.log(node.material.name);
                                         node.material = material;
                                     }
-                                    
-                                    // node.material = material;
-                                    // node.blend = 0.4;
-                                    // node.opacity = 0.5;
-                                    // node.transparent = true;
-                                    // console.log(node.opacity);
                                 }
                             });
 
@@ -172,24 +167,11 @@ function animate() {
     }
 
 
-
     target.x = ( 1 - mouse.x ) * 0.001;
     target.y = ( 1 - mouse.y ) * 0.001;
   
 
     controls.target.set( target.x, target.y, - 0.2 );
-
-    // console.log(target.x);
-    // console.log(target.y);
-
-    // document.addEventListener("mouseleave", function(event){
-
-    //     if(event.clientY <= 0 || event.clientX <= 0 || (event.clientX >= window.innerWidth || event.clientY >= window.innerHeight))
-    //     {
-    //        console.log("I'm out");
-    //        controls.target.set( 0, 0, - 0.2 );
-    //     }
-    //   });
     
     controls.update();
 
@@ -204,7 +186,8 @@ function animate() {
 
 function render() {
 
-    
+    //report camera position:
+
     // if (camera.position.x != last_cameraPositionX) {
     //     console.log(camera.position);
     //     last_cameraPositionX = camera.position.x;
